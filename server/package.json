@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate",
+  "name": "ReactTube",
   "version": "1.0.0",
-  "description": "mern-boilerplate",
+  "description": "Youtube clone with boilerplate",
   "main": "app.js",
   "scripts": {
     "start": "nodemon server/app",

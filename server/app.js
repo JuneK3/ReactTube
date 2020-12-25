@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.set('port', process.env.PORT || 8000);
+app.set('port', process.env.PORT || 8080);
 
 app.use('/api/users', userRouter);
 
@@ -35,6 +35,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log('http://localhost:8000');
+  console.log('http://localhost:8080');
   console.log(app.get('port'), '번에서 대기중입니다.');
 });
