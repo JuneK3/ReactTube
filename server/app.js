@@ -5,6 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const connect = require('./models');
 const userRouter = require('./routes/user');
+const videoRouter = require('./routes/video');
 
 dotenv.config({
   path: path.resolve(
@@ -16,6 +17,7 @@ connect();
 
 const app = express();
 app.use(morgan('dev'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -23,6 +25,7 @@ app.use(cookieParser());
 app.set('port', process.env.PORT || 8080);
 
 app.use('/api/users', userRouter);
+app.use('/api/video', videoRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
