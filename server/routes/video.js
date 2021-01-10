@@ -5,6 +5,7 @@ const { Video } = require('../models/video');
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
+const { route } = require('./user');
 
 const router = express.Router();
 
@@ -80,6 +81,16 @@ router.post('/thumbnail', (req, res) => {
       size: '320x240',
       filename: 'thumbnail-%b.png',
     });
+});
+
+router.get('/getVideos', async (req, res) => {
+  try {
+    const videos = await Video.find().populate('writer');
+    return res.json({ success: true, videos });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, err });
+  }
 });
 
 module.exports = router;

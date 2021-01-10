@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import { Typography, Button, Form, message, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -21,7 +22,8 @@ const Category = [
   { value: 4, label: 'Sports' },
 ];
 
-function VideoUploadPage() {
+function VideoUploadPage(props) {
+  const user = useSelector((state) => state.users);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [privacy, setPrivacy] = useState(0);
@@ -40,12 +42,38 @@ function VideoUploadPage() {
 
   const handleChangePrivacy = (e) => {
     setPrivacy(e.target.value);
-    console.log(privacy);
   };
 
   const handleChangeCategory = (e) => {
     setCategory(e.target.value);
-    console.log(category);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const variable = {
+      writer: user.userData._id,
+      title,
+      description,
+      privacy,
+      filePath,
+      category,
+      duration,
+      thumbnailPath,
+    };
+    axios
+      .post('/api/video/uploadVideo', variable)
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          message.success('Video Uploaded Successfully');
+          setTimeout(() => {
+            props.history.push('/');
+          }, 3000);
+        } else {
+          alert('Failed to upload video');
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const onDrop = (files) => {
@@ -54,7 +82,7 @@ function VideoUploadPage() {
     console.log(files);
     formData.append('file', files[0]);
     axios
-      .post('/api/video/upload', formData, config)
+      .post('/api/video/uploadFile', formData, config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
@@ -169,6 +197,7 @@ function VideoUploadPage() {
         <Button
           type='primary'
           size='large'
+          onClick={onSubmit}
           style={{ alignSelf: 'flex-start', width: '85px' }}>
           Submit
         </Button>
