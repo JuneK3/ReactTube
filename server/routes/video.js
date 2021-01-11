@@ -93,4 +93,16 @@ router.get('/getVideos', async (req, res) => {
   }
 });
 
+router.post('/getVideo', async (req, res) => {
+  try {
+    const video = await Video.findOne({ _id: req.body.videoId }).populate(
+      'writer'
+    );
+    return res.json({ success: true, video });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, err });
+  }
+});
+
 module.exports = router;
