@@ -7,6 +7,7 @@ import RegisterPage from './components/views/RegisterPage/RegisterPage';
 import NavBar from './components/views/NavBar/NavBar';
 import Footer from './components/views/Footer/Footer';
 import VideoUploadPage from './components/views/VideoUploadPage/VideoUploadPage';
+import VideoDetail from './components/views/VideoDetail/VideoDetail';
 import Auth from './hoc/auth';
 
 function App() {
@@ -14,16 +15,15 @@ function App() {
     <Router>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={Auth(LandingPage, null)}></Route>
-        <Route exact path='/login' component={Auth(LoginPage, false)}></Route>
-        <Route
-          exact
-          path='/register'
-          component={Auth(RegisterPage, false)}></Route>
+        <Route exact path='/' component={Auth(LandingPage, null)} />
+        <Route exact path='/login' component={Auth(LoginPage, false)} />
+        <Route exact path='/register' component={Auth(RegisterPage, false)} />
         <Route
           exact
           path='/video/upload'
-          component={Auth(VideoUploadPage, true)}></Route>
+          component={Auth(VideoUploadPage, true)}
+        />
+        <Route exact path='/video/:videoId' component={VideoDetail} />
       </Switch>
       <Footer />
     </Router>
