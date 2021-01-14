@@ -5,7 +5,8 @@ const { Video } = require('../models/video');
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
-const { route } = require('./user');
+const { Subscriber } = require('../models/subscriber');
+const { subscribe } = require('./subscriber');
 
 const router = express.Router();
 
@@ -99,6 +100,23 @@ router.post('/getVideo', async (req, res) => {
       'writer'
     );
     return res.json({ success: true, video });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, err });
+  }
+});
+
+router.post('/SubscriptionVideos', async (req, res) => {
+  try {
+    const subscribers = await Subscriber.find({ userFrom: req.body.userFrom });
+    const subscribedUser = [];
+    subscribers.forEach((subscriber) => {
+      subscribedUser.push(subscriber.userTo);
+    });
+    const videos = await Subscriber.find({
+      writer: { $in: subscribedUser },
+    }).populate('writer');
+    return res.json({ success: true, videos });
   } catch (err) {
     console.log(err);
     return res.json({ success: false, err });

@@ -8,6 +8,7 @@ import NavBar from './components/views/NavBar/NavBar';
 import Footer from './components/views/Footer/Footer';
 import VideoUploadPage from './components/views/VideoUploadPage/VideoUploadPage';
 import VideoDetail from './components/views/VideoDetail/VideoDetail';
+import SubscriptionPage from './components/SubscriptionPage/SubscriptionPage';
 import Auth from './hoc/auth';
 
 function App() {
@@ -23,7 +24,16 @@ function App() {
           path='/video/upload'
           component={Auth(VideoUploadPage, true)}
         />
-        <Route exact path='/video/:videoId' component={VideoDetail} />
+        <Route
+          exact
+          path='/video/:videoId'
+          component={Auth(VideoDetail, null)}
+        />
+        <Route
+          exact
+          path='/subscription'
+          component={Auth(SubscriptionPage, null)}
+        />
       </Switch>
       <Footer />
     </Router>

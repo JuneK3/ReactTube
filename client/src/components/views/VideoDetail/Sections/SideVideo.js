@@ -18,12 +18,14 @@ function SideVideo() {
       .catch((err) => console.log(err));
   }, []);
 
-  const renderSideVideos = sideVideos.map((video) => {
+  const renderSideVideos = sideVideos.map((video, idx) => {
     const min = Math.floor(video.duration / 60);
     const sec = Math.floor(video.duration - min * 60);
 
     return (
-      <div style={{ display: 'flex', marginTop: '1rem', padding: '0 2rem' }}>
+      <div
+        key={idx}
+        style={{ display: 'flex', marginTop: '1rem', padding: '0 2rem' }}>
         <div style={{ width: '40%', marginRight: '1rem' }}>
           <a href={`/video/${video._id}`}>
             <img

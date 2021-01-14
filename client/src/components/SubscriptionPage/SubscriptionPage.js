@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Card, Avatar, Col, Typography, Row } from 'antd';
 const { Title } = Typography;
 const { Meta } = Card;
 
-function LandingPage({ history }) {
+function SubscriptionPage(props) {
+  const user = useSelector((state) => state.users);
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
+    console.log(user, props.user);
+    const data = { userFrom: user.userData._id };
     axios
-      .get('/api/video/getVideos')
+      .post('/api/video/subscriptionVideos', data)
       .then((res) => {
         console.log(res.data.videos);
         if (res.data.success) {
@@ -26,7 +29,7 @@ function LandingPage({ history }) {
     const min = Math.floor(video.duration / 60);
     const sec = Math.floor(video.duration - min * 60);
     return (
-      <Col lg={6} md={8} xs={24} key={idx}>
+      <Col lg={6} md={8} xs={24} key={'Col' + idx.toString()}>
         <div style={{ position: 'relative' }}>
           <a href={`/video/${video._id}`}>
             <img
@@ -77,11 +80,11 @@ function LandingPage({ history }) {
         margin: '3rem auto',
         height: '100vh',
       }}>
-      <Title level={2}> Recommended </Title>
+      <Title level={2}> Subscribed </Title>
       <hr />
       <Row gutter={16}>{renderCards}</Row>
     </div>
   );
 }
 
-export default withRouter(LandingPage);
+export default SubscriptionPage;

@@ -23,7 +23,7 @@ export default function HocComponent(
           if (adminRoute && !response.payload.isAdmin) {
             props.history.push('/');
           }
-          if (!option) {
+          if (option === false) {
             props.history.push('/');
           }
         }
