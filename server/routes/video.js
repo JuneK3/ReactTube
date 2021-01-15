@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { User } = require('../models/user');
+const { Video } = require('../models/video');
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
@@ -25,7 +26,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }).single('file');
 
-router.post('/upload', (req, res) => {
+router.post('/uploadFile', (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       return res.json({ success: false, err });
@@ -38,20 +39,31 @@ router.post('/upload', (req, res) => {
   });
 });
 
+router.post('/uploadVideo', async (req, res) => {
+  try {
+    const video = new Video(req.body);
+    await video.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, err });
+  }
+});
+
 router.post('/thumbnail', (req, res) => {
   let filePath = '';
   let fileDuration = '';
 
   ffmpeg.ffprobe(req.body.url, (err, metadata) => {
-    console.log('metadata', metadata);
-    console.log(metadata.format.duration);
+    // console.log('metadata', metadata);
+    // console.log(metadata.format.duration);
     fileDuration = metadata.format.duration;
   });
 
   ffmpeg(req.body.url)
     .on('filenames', (filenames) => {
-      console.log('Will generate', filenames.join(', '));
-      console.log(filenames);
+      // console.log('Will generate', filenames.join(', '));
+      // console.log(filenames);
       filePath = 'uploads/thumbnails/' + filenames[0];
     })
     .on('end', () => {
