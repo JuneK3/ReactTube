@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { auth } from '../../../_actions/user_action';
 import axios from 'axios';
 import { Card, Avatar, Col, Typography, Row } from 'antd';
 const { Title } = Typography;
 const { Meta } = Card;
 
 function SubscriptionPage(props) {
-  const user = useSelector((state) => state.users);
   const [videos, setVideos] = useState([]);
+  const dispatch = useDispatch();
+  let user = useRef(null);
 
   useEffect(() => {
-    console.log(user, props.user);
-    const data = { userFrom: user.userData._id };
-    axios
-      .post('/api/video/subscriptionVideos', data)
-      .then((res) => {
-        console.log(res.data.videos);
-        if (res.data.success) {
-          setVideos(res.data.videos);
-        } else {
-          alert('Failed to get Videos');
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    dispatch(auth()).then((res) => {
+      user = res.payload;
+      const data = { userFrom: user._id };
+      axios
+        .post('/api/video/subscriptionVideos', data)
+        .then((res) => {
+          console.log(res.data.videos);
+          if (res.data.success) {
+            setVideos(res.data.videos);
+          } else {
+            alert('Failed to get Videos');
+          }
+        })
+        .catch((err) => console.log(err));
+    });
+  }, [user, dispatch]);
 
   const renderCards = videos.map((video, idx) => {
     const min = Math.floor(video.duration / 60);

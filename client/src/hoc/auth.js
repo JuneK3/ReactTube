@@ -11,7 +11,7 @@ export default function HocComponent(
   //true    =>  로그인한 유저만 출입이 가능한 페이지
   //false   =>  로그인한 유저는 출입 불가능한 페이지
   function AuthCheck(props) {
-    let user = useSelector((state) => state.users);
+    const user = useSelector((state) => state.users);
     const dispatch = useDispatch();
     useEffect(() => {
       dispatch(auth()).then((response) => {
