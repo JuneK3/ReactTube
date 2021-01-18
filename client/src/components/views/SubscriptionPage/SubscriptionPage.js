@@ -9,12 +9,12 @@ const { Meta } = Card;
 function SubscriptionPage(props) {
   const [videos, setVideos] = useState([]);
   const dispatch = useDispatch();
-  let user = useRef(null);
+  let userId = useRef(null);
 
   useEffect(() => {
     dispatch(auth()).then((res) => {
-      user = res.payload;
-      const data = { userFrom: user._id };
+      userId.current = res.payload._id;
+      const data = { userFrom: userId.current };
       axios
         .post('/api/video/subscriptionVideos', data)
         .then((res) => {
@@ -27,7 +27,7 @@ function SubscriptionPage(props) {
         })
         .catch((err) => console.log(err));
     });
-  }, [user, dispatch]);
+  }, [userId, dispatch]);
 
   const renderCards = videos.map((video, idx) => {
     const min = Math.floor(video.duration / 60);
