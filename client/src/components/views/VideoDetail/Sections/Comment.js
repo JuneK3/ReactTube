@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Input, Button } from 'antd';
 import { useSelector } from 'react-redux';
 import SingleComment from './SingleComment';
@@ -26,7 +26,7 @@ function Comment(props) {
       .post('/api/comment/saveComment', data)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data.content);
+          // console.log(res.data.content);
           setCommentValue('');
           props.updateComment(res.data.content);
         } else {
@@ -48,21 +48,19 @@ function Comment(props) {
         props.commentLists.map(
           (comment, idx) =>
             !comment.responseTo && (
-              <>
+              <Fragment key={idx}>
                 <SingleComment
-                  key={idx.toString() + 'single'}
                   comment={comment}
                   videoId={props.videoId}
                   updateComment={props.updateComment}
                 />
                 <ReplyComment
-                  key={idx.toString() + 'reply'}
                   parentCommentId={comment._id}
                   commentLists={props.commentLists}
                   videoId={props.videoId}
                   updateComment={props.updateComment}
                 />
-              </>
+              </Fragment>
             )
         )}
 

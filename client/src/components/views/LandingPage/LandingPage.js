@@ -12,7 +12,7 @@ function LandingPage({ history }) {
     axios
       .get('/api/video/getVideos')
       .then((res) => {
-        console.log(res.data.videos);
+        // console.log(res.data.videos);
         if (res.data.success) {
           setVideos(res.data.videos);
         } else {

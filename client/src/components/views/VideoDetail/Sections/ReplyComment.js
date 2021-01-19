@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import SingleComment from './SingleComment';
 
 function ReplyComment(props) {
@@ -17,30 +17,28 @@ function ReplyComment(props) {
 
   const handleReplyComments = () => {
     setOpenReplyComments(!openReplyComments);
-    console.log(openReplyComments);
   };
 
-  const renderReplyComment = (parentCommentId) => {
-    props.commentLists.map((comment, idx) => {
-      comment.responseTo === parentCommentId && (
-        <div style={{ width: '80%', marginLeft: '40px' }}>
-          <SingleComment
-            key={idx.toString() + 'single'}
-            comment={comment}
-            videoId={props.videoId}
-            updateComment={props.updateComment}
-          />
-          <ReplyComment
-            key={idx.toString() + 'reply'}
-            parentCommentId={comment._id}
-            commentLists={props.commentLists}
-            videoId={props.videoId}
-            updateComment={props.updateComment}
-          />
-        </div>
-      );
-    });
-  };
+  const renderReplyComment = (parentCommentId) =>
+    props.commentLists.map((comment, idx) => (
+      <Fragment key={idx}>
+        {comment.responseTo === parentCommentId && (
+          <div style={{ width: '80%', marginLeft: '40px' }}>
+            <SingleComment
+              comment={comment}
+              videoId={props.videoId}
+              updateComment={props.updateComment}
+            />
+            <ReplyComment
+              commentLists={props.commentLists}
+              parentCommentId={comment._id}
+              videoId={props.videoId}
+              updateComment={props.updateComment}
+            />
+          </div>
+        )}
+      </Fragment>
+    ));
 
   return (
     <div>

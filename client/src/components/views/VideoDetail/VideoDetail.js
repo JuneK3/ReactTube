@@ -21,7 +21,7 @@ function VideoDetail(props) {
         .post('/api/video/getVideo', { videoId })
         .then((res) => {
           if (res.data.success) {
-            console.log(res.data.video);
+            // console.log(res.data.video);
             setVideo(res.data.video);
           } else {
             alert('Failed to get video Info');
@@ -32,8 +32,7 @@ function VideoDetail(props) {
 
     axios.post('/api/comment/getComments', { videoId }).then((res) => {
       if (res.data.success) {
-        console.log(res.data);
-        console.log('res.data.comments', res.data.comments);
+        // console.log(res.data.comments);
         setCommentLists(res.data.comments);
       } else {
         alert('Failed to get video Info');

@@ -63,7 +63,7 @@ function VideoUploadPage(props) {
     axios
       .post('/api/video/uploadVideo', variable)
       .then((res) => {
-        console.log(res);
+        // console.log(res.data);
         if (res.data.success) {
           message.success('Video Uploaded Successfully');
           setTimeout(() => {

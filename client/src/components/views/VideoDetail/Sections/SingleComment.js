@@ -30,7 +30,7 @@ function SingleComment(props) {
       .post('/api/comment/saveComment', data)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data.content);
+          // console.log(res.data.content);
           setCommentValue('');
           setOpenReply(!openReply);
           props.updateComment(res.data.content);
