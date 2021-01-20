@@ -8,6 +8,7 @@ const userRouter = require('./routes/user');
 const videoRouter = require('./routes/video');
 const subscribeRouter = require('./routes/subscriber');
 const commentRouter = require('./routes/comment');
+const likeRouter = require('./routes/like');
 
 dotenv.config({
   path: path.resolve(
@@ -30,6 +31,7 @@ app.use('/api/users', userRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/subscriber', subscribeRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/like', likeRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
